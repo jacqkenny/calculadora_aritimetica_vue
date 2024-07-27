@@ -1,47 +1,66 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { reactive } from 'vue';
+import Cabecalho from './components/Cabecalho.vue'
+import Calculos from './components/Formulario.vue'
+
+const estado = reactive({
+  valor1: '',
+  valor2: '',
+  filtro: 'adicao',
+});
+
+const adicao = ({ valor1, valor2 } = estado) => {
+  return Number(valor1 + valor2);
+};
+const divisao = ({ valor1, valor2 } = estado) => {
+  return valor1 / valor2;
+};
+
+const subtracao = ({ valor1, valor2 } = estado) => {
+  return valor1 - valor2;
+};
+const multiplicacao = ({ valor1, valor2 } = estado) => {
+  return valor1 * valor2;
+};
+
+const calculo = () => {
+  const {valor1, valor2, filtro} = estado;
+
+  if ((valor1, valor2)) {
+    switch (filtro) {
+      case "adicao":
+        return adicao();
+      case "divisao":
+        return divisao();
+      case "subtracao":
+        return subtracao();
+      case "multiplicacao":
+        return multiplicacao();
+    }
+  }
+};
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="container">
+    <Cabecalho />
+    <Calculos :valor1="(evento) => (estado.valor1 = Number(evento.target.value))"
+              :valor2="(evento) => (estado.valor2 = Number(evento.target.value))"
+              :filtro="(evento) => (estado.filtro = evento.target.value)"
+              />
+      <h2>Resultado: <span>{{ calculo() }}</span></h2>
+    
+  </div>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+  h2 {
+    text-align: center;
+    margin: 20px;
   }
-
-  .logo {
-    margin: 0 2rem 0 0;
+  span {
+    color: red;
+    text-decoration: underline;
   }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
